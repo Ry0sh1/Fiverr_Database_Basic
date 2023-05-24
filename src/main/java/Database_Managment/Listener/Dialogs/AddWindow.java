@@ -1,18 +1,21 @@
-package Listener.Dialogs;
+package Database_Managment.Listener.Dialogs;
 
+import Database_Managment.Column;
+import Database_Managment.Listener.Dialogs.Options_AddWindow.AddColumn;
+import Database_Managment.Listener.Dialogs.Options_AddWindow.AddTable;
 import Database_Managment.Standard.Standard_Button;
 import Database_Managment.Standard.Standard_Dialog;
 import Database_Managment.Standard.Standard_Label;
 import Database_Managment.Standard.Standard_Panel;
-import Listener.Data_ActionListener;
+import Database_Managment.Listener.Data_ActionListener;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 
 public class AddWindow extends Standard_Dialog {
 
+    public static ArrayList<Column> COLUMNS = new ArrayList<>();
     public AddWindow(Frame owner) {
         super(owner);
         setTitle("Select");
@@ -27,8 +30,17 @@ public class AddWindow extends Standard_Dialog {
         Standard_Panel buttonPanel = new Standard_Panel(new FlowLayout());
         ArrayList<Standard_Button> buttons = new ArrayList<>();
         Standard_Button cancel = new Standard_Button("Cancel");
+        cancel.addActionListener(e -> this.dispose());
         Standard_Button table = new Standard_Button("Table");
+        table.addActionListener(e -> {
+            this.dispose();
+            new AddTable(owner);
+        });
         Standard_Button column = new Standard_Button("Column");
+        column.addActionListener(e -> {
+            this.dispose();
+            new AddColumn(owner);
+        });
         Standard_Button row = new Standard_Button("Row");
         cancel.setName("cancel");
         table.setName("table");

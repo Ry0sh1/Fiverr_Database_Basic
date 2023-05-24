@@ -4,17 +4,16 @@ import Database_Managment.Global;
 
 import javax.swing.*;
 
-public class Standard_Label extends JLabel {
+public class Standard_Checkbox extends JCheckBox {
 
-    public Standard_Label(String text) {
-        super(text);
+    public Standard_Checkbox() {
         init();
     }
 
     private void init(){
-        setBackground(Global.BACKGROUND_1);
+        setBackground(Global.BACKGROUND_2);
         setForeground(Global.FOREGROUND);
-        setHorizontalAlignment(CENTER);
+        setBorder(BorderFactory.createLineBorder(Global.LINES,1));
     }
 
 }

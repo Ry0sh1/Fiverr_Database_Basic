@@ -20,6 +20,7 @@ public class Standard_Dialog extends JDialog {
         setLocationRelativeTo(frame);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModalityType(ModalityType.APPLICATION_MODAL);
+        setResizable(false);
     }
 
 }

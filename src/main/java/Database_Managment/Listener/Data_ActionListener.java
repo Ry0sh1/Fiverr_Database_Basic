@@ -1,7 +1,7 @@
-package Listener;
+package Database_Managment.Listener;
 
 import Database_Managment.GUI.Dashboard.Frame_Dashboard;
-import Listener.Dialogs.AddWindow;
+import Database_Managment.Listener.Dialogs.AddWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
