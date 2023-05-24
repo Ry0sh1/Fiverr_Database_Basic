@@ -3,7 +3,7 @@ package Database_Managment;
 public class Column {
 
     public final String columnName;
-    public final int dataType;
+    public String dataType;
     public final boolean primaryKey;
     public final boolean foreignKey;
     public final String foreignTableName;
@@ -13,7 +13,13 @@ public class Column {
 
     public Column(String columnName, int dataType, boolean primaryKey, boolean foreignKey, String foreignTableName, String foreignColumnName, boolean notNull, boolean autoIncrement) {
         this.columnName = columnName;
-        this.dataType = dataType;
+        this.dataType = null;
+        switch (dataType){
+            case 0 -> this.dataType = "INTEGER";
+            case 1 -> this.dataType = "TEXT";
+            case 2 -> this.dataType = "REAL";
+            case 3 -> this.dataType = "BLOB";
+        }
         this.primaryKey = primaryKey;
         this.foreignKey = foreignKey;
         this.foreignTableName = foreignTableName;

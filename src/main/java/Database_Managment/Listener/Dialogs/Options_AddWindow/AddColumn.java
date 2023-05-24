@@ -1,7 +1,6 @@
 package Database_Managment.Listener.Dialogs.Options_AddWindow;
 
 import Database_Managment.Column;
-import Database_Managment.Listener.Data_ActionListener;
 import Database_Managment.Listener.Dialogs.AddWindow;
 import Database_Managment.Standard.*;
 
@@ -93,6 +92,15 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
         Standard_Panel panel = new Standard_Panel(new FlowLayout());
         Standard_Label label_foreignKey = new Standard_Label("Foreign Key");
         checkBox_foreignKey = new Standard_Checkbox();
+        checkBox_foreignKey.addChangeListener(e->{
+            if (checkBox_foreignKey.isSelected()){
+                textField_foreignKey_ColumnName.setEnabled(true);
+                textField_foreignKey_tableName.setEnabled(true);
+            }else {
+                textField_foreignKey_ColumnName.setEnabled(false);
+                textField_foreignKey_tableName.setEnabled(false);
+            }
+        });
         label_foreignKey.setPreferredSize(new Dimension(80,20));
         textField_foreignKey_tableName = new Standard_TextField("(TableName)");
         textField_foreignKey_tableName.setPreferredSize(new Dimension(80,20));

@@ -3,15 +3,15 @@ package Database_Managment.Listener.Dialogs.Options_AddWindow;
 import Database_Managment.Column;
 import Database_Managment.Global;
 import Database_Managment.Listener.Dialogs.AddWindow;
-import Database_Managment.SQL.LiteSQL;
 import Database_Managment.Standard.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class AddTable extends Standard_Dialog {
 
-    private Standard_TextField textField_TableName;
+    private final Standard_TextField textField_TableName;
 
     public static Standard_Dialog INSTANCE;
 
@@ -68,8 +68,7 @@ public class AddTable extends Standard_Dialog {
         });
         Standard_Button create = new Standard_Button("Create");
         create.addActionListener(e -> {
-            String tableName = textField_TableName.getText();
-            LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS " + tableName);
+            createTable();
             this.dispose();
         });
         create.setPreferredSize(new Dimension(80,40));
@@ -82,6 +81,102 @@ public class AddTable extends Standard_Dialog {
         pack();
         setVisible(true);
 
+    }
+
+    private void createTable(){
+        StringBuilder arg = new StringBuilder("CREATE TABLE IF NOT EXISTS " + textField_TableName.getText() + "(");
+
+        int counter1 = 0;
+        for (Column c:AddWindow.COLUMNS) {
+            counter1++;
+            arg.append(c.columnName).append(" ").append(c.dataType);
+
+            if (getAmountPrimaryKeys() == 1){
+                if (c.primaryKey){
+                    arg.append(" PRIMARY KEY");
+                }
+                if (c.autoIncrement){
+                    arg.append(" AUTOINCREMENT");
+                }
+            }
+            if (c.notNull){
+                arg.append(" NOT NULL");
+            }
+            if (counter1 < AddWindow.COLUMNS.size()){
+                arg.append(",");
+            }
+        }
+
+        if (getAmountPrimaryKeys()>1){
+            int counter = 0;
+            arg.append(", PRIMARY KEY (");
+            for (Column c:getPrimaryColumns()) {
+                counter++;
+                arg.append(c.columnName);
+                if (c.autoIncrement){
+                    arg.append(" AUTOINCREMENT");
+                }
+                if (counter < getAmountPrimaryKeys()){
+                    arg.append(",");
+                }
+            }
+            arg.append(")");
+        }
+
+        if (getAmountForeignKeys() > 0){
+            for (Column c:getForeignColumns()) {
+                arg.append(", FOREIGN KEY (");
+                arg.append(c.columnName).append(") ");
+                arg.append("REFERENCES ").append(c.foreignTableName).append("(").append(c.foreignColumnName).append(")");
+            }
+        }
+
+        arg.append(")");
+
+        System.out.println(arg);
+
+        AddWindow.COLUMNS.clear();
+
+    }
+
+    private int getAmountPrimaryKeys(){
+        int primaryKeys = 0;
+        for (Column c:AddWindow.COLUMNS) {
+            if (c.primaryKey) {
+                primaryKeys++;
+            }
+        }
+        return primaryKeys;
+    }
+
+    private int getAmountForeignKeys(){
+        int foreignKeys = 0;
+        for (Column c:AddWindow.COLUMNS) {
+            if (c.foreignKey) {
+                foreignKeys++;
+            }
+        }
+        return foreignKeys;
+    }
+
+    private ArrayList<Column> getPrimaryColumns(){
+        ArrayList<Column> columnPrimaryKey = new ArrayList<>();
+        for (Column c:AddWindow.COLUMNS) {
+            if (c.primaryKey) {
+                columnPrimaryKey.add(c);
+            }
+        }
+        return columnPrimaryKey;
+    }
+
+    private ArrayList<Column> getForeignColumns(){
+        ArrayList<Column> columnForeignKey = new ArrayList<>();
+        for (Column c:AddWindow.COLUMNS) {
+            if (c.foreignKey) {
+                columnForeignKey.add(c);
+            }
+        }
+        return columnForeignKey;
     }
 
 }
