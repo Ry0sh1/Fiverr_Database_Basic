@@ -6,7 +6,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
 public class Global {
-
+    //Test
     public static Color BACKGROUND_1 = new Color(40,40,40);
     public static Color BACKGROUND_2 = new Color(60,60,60);
     public static Color FOREGROUND = new Color(255,255,255);
