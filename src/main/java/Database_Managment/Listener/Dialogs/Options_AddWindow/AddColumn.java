@@ -1,7 +1,6 @@
 package Database_Managment.Listener.Dialogs.Options_AddWindow;
 
 import Database_Managment.Column;
-import Database_Managment.Listener.Dialogs.AddWindow;
 import Database_Managment.Standard.*;
 
 import javax.swing.*;

@@ -1,7 +1,8 @@
 package Database_Managment.Listener;
 
 import Database_Managment.GUI.Dashboard.Frame_Dashboard;
-import Database_Managment.Listener.Dialogs.AddWindow;
+import Database_Managment.Listener.Dialogs.Options_AddWindow.AddWindow;
+import Database_Managment.Listener.Dialogs.Options_SwitchTable.SwitchTableWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +27,7 @@ public class Data_ActionListener implements ActionListener {
                 //TODO:CHANGE
             }
             case "switchTable" ->{
-                //TODO:SWITCH_TABLE
+                new SwitchTableWindow(Frame_Dashboard.FRAME);
             }
 
         }

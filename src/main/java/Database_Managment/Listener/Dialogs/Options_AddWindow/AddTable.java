@@ -2,7 +2,7 @@ package Database_Managment.Listener.Dialogs.Options_AddWindow;
 
 import Database_Managment.Column;
 import Database_Managment.Global;
-import Database_Managment.Listener.Dialogs.AddWindow;
+import Database_Managment.SQL.LiteSQL;
 import Database_Managment.Standard.*;
 
 import javax.swing.*;
@@ -133,7 +133,8 @@ public class AddTable extends Standard_Dialog {
 
         arg.append(")");
 
-        System.out.println(arg);
+        System.out.println(arg.toString());
+        LiteSQL.onUpdate(arg.toString());
 
         AddWindow.COLUMNS.clear();
 

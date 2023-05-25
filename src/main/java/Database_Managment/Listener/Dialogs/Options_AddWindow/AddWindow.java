@@ -1,4 +1,4 @@
-package Database_Managment.Listener.Dialogs;
+package Database_Managment.Listener.Dialogs.Options_AddWindow;
 
 import Database_Managment.Column;
 import Database_Managment.Listener.Dialogs.Options_AddWindow.AddColumn;

@@ -9,7 +9,7 @@ import java.awt.*;
 public class Panel_Dashboard_All extends Standard_Panel {
 
     public Panel_Dashboard_All() {
-        setPreferredSize(new Dimension(1200,800));
+        setPreferredSize(new Dimension(1060,520));
         add(new Panel_Dashboard_West(), BorderLayout.WEST);
         add(new Panel_Dashboard_East(), BorderLayout.EAST);
     }
