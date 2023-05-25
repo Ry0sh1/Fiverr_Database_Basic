@@ -42,6 +42,10 @@ public class AddWindow extends Standard_Dialog {
             new AddColumn(owner);
         });
         Standard_Button row = new Standard_Button("Row");
+        row.addActionListener(e -> {
+            this.dispose();
+            new AddRow(owner);
+        });
         cancel.setName("cancel");
         table.setName("table");
         column.setName("column");

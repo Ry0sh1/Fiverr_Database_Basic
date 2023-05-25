@@ -68,6 +68,7 @@ public class AddTable extends Standard_Dialog {
         Standard_Button create = new Standard_Button("Create");
         create.addActionListener(e -> {
             createTable();
+            Global.selected = textField_TableName.getText();
             this.dispose();
         });
         create.setPreferredSize(new Dimension(80,40));
