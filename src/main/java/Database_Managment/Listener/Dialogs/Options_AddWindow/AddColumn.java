@@ -149,8 +149,16 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
 
     private boolean validInput(){
 
-        if (textField_columnName.getText()==null || textField_columnName.getText().equals("")){
+        String[] noNoWords ={"alter","not","null","primary","key","foreign","table","create","select",
+                "where","and","desc","asc","insert","into","add","column","join","left","right","inner"};
+        String pattern = "^[a-zA-Z0-9]+$";
+        if (textField_columnName.getText()==null || textField_columnName.getText().equals("") || !textField_columnName.getText().matches(pattern)){
             return false;
+        }
+        for (int i = 0;i < noNoWords.length;i++){
+            if (textField_columnName.getText().equalsIgnoreCase(noNoWords[0])){
+                return false;
+            }
         }
         if (checkBox_foreignKey.isSelected()) {
             if (textField_foreignKey_tableName.getText()==null || textField_foreignKey_tableName.getText().equals("") || textField_foreignKey_ColumnName.getText()==null || textField_foreignKey_ColumnName.getText().equals("")) {

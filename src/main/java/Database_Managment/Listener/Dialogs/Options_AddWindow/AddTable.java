@@ -47,7 +47,6 @@ public class AddTable extends Standard_Dialog {
         if (AddWindow.COLUMNS.size() > 0) {
             Standard_Panel all_Columns = new Standard_Panel(new FlowLayout());
             for (Column c : AddWindow.COLUMNS) {
-                System.out.println(c.columnName);
                 Standard_Label s = new Standard_Label(c.columnName);
                 s.setBorder(BorderFactory.createLineBorder(Global.LINES,2));
                 s.setFocusable(false);
