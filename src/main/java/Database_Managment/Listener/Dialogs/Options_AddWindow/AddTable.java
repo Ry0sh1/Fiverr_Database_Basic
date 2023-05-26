@@ -15,8 +15,13 @@ public class AddTable extends Standard_Dialog {
 
     public static Standard_Dialog INSTANCE;
 
+    private final Frame owner;
+
+    private ArrayList<Standard_Button> columnButtons;
+
     public AddTable(Frame owner) {
         super(owner);
+        this.owner = owner;
         INSTANCE = this;
         setTitle("Create Table");
 
@@ -44,15 +49,24 @@ public class AddTable extends Standard_Dialog {
         panel_AddColumn.add(button_addColumn);
         panel_Center.add(panel_AddColumn, BorderLayout.CENTER);
 
+        columnButtons = new ArrayList<>();
         if (AddWindow.COLUMNS.size() > 0) {
             Standard_Panel all_Columns = new Standard_Panel(new FlowLayout());
             for (Column c : AddWindow.COLUMNS) {
-                Standard_Label s = new Standard_Label(c.columnName);
+                Standard_Button s = new Standard_Button(c.columnName);
                 s.setBorder(BorderFactory.createLineBorder(Global.LINES,2));
                 s.setFocusable(false);
                 s.setBackground(Global.BACKGROUND_2);
                 s.setPreferredSize(new Dimension(80, 20));
+                s.addActionListener(e -> {
+                    columnButtons.remove(s);
+                    AddWindow.COLUMNS.remove(c);
+                    all_Columns.remove(s);
+                    repaint();
+                    revalidate();
+                });
                 all_Columns.add(s);
+                columnButtons.add(s);
             }
             panel_Center.add(all_Columns,BorderLayout.SOUTH);
         }
@@ -67,9 +81,10 @@ public class AddTable extends Standard_Dialog {
         });
         Standard_Button create = new Standard_Button("Create");
         create.addActionListener(e -> {
-            createTable();
-            Global.selected = textField_TableName.getText();
-            this.dispose();
+            if (checkValidation()){
+                Global.selected = textField_TableName.getText();
+                this.dispose();
+            }
         });
         create.setPreferredSize(new Dimension(80,40));
         Standard_Panel panel_buttons = new Standard_Panel(new FlowLayout());
@@ -82,7 +97,24 @@ public class AddTable extends Standard_Dialog {
         setVisible(true);
 
     }
+    private boolean checkValidation(){
 
+        if (textField_TableName.getText().equals("") || textField_TableName.getText() == null){
+            JOptionPane.showMessageDialog(owner,"Table Name shouldn't be empty!","Error 203",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        for (Column c:AddWindow.COLUMNS) {
+            if (c.autoIncrement) {
+                if (getAmountPrimaryKeys() > 1) {
+                    JOptionPane.showMessageDialog(owner, "Multiple keys with autoincrement constraints aren't allowed!", "Error 202", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        }
+        createTable();
+        return true;
+    }
     private void createTable(){
         StringBuilder arg = new StringBuilder("CREATE TABLE IF NOT EXISTS " + textField_TableName.getText() + "(");
 
@@ -133,7 +165,6 @@ public class AddTable extends Standard_Dialog {
 
         arg.append(")");
 
-        System.out.println(arg.toString());
         LiteSQL.onUpdate(arg.toString());
 
         AddWindow.COLUMNS.clear();
