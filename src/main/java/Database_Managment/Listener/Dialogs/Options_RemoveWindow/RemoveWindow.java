@@ -18,7 +18,7 @@ public class RemoveWindow extends Standard_Dialog {
     public static ArrayList<Column> COLUMNS = new ArrayList<>();
     public RemoveWindow(Frame owner) {
         super(owner);
-        setTitle("Select");
+        setTitle("Remove");
 
         Standard_Panel contentPanel = new Standard_Panel(new BorderLayout());
 
@@ -33,7 +33,7 @@ public class RemoveWindow extends Standard_Dialog {
         cancel.addActionListener(e -> this.dispose());
         Standard_Button table = new Standard_Button("Table");
         table.addActionListener(e -> {
-            //TODO
+            new RemoveTable(owner);
         });
         Standard_Button column = new Standard_Button("Column");
         column.addActionListener(e -> {

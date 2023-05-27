@@ -15,11 +15,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class RemoveColumn extends Standard_Dialog {
+public class RemoveTable extends Standard_Dialog {
 
     private JComboBox<String> input;
 
-    public RemoveColumn(Frame owner) {
+    public RemoveTable(Frame owner) {
         super(owner);
         setTitle("Remove Column");
 
@@ -30,16 +30,16 @@ public class RemoveColumn extends Standard_Dialog {
         header.setPreferredSize(new Dimension(160,40));
 
         try {
-            int columnCount = LiteSQL.onQuery("SELECT COUNT(*) FROM pragma_table_info('" + Global.selected + "')").getInt(1);
-            String[] allColumns = new String[columnCount];
-            PreparedStatement statement = LiteSQL.prepareStatement("SELECT name FROM pragma_table_info('" + Global.selected + "')");
+            int tableCount = LiteSQL.onQuery("SELECT COUNT(*) FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'").getInt(1);
+            String[] allTables = new String[tableCount];
+            PreparedStatement statement = LiteSQL.prepareStatement("SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'");
             ResultSet rs = statement.executeQuery();
             int i = 0;
             while (rs.next()) {
-                allColumns[i] = rs.getString("name");
+                allTables[i] = rs.getString("name");
                 i++;
             }
-            input = new JComboBox<>(allColumns);
+            input = new JComboBox<>(allTables);
             input.setSelectedIndex(0);
             input.setPreferredSize(new Dimension(180, 20));
             headerPanel.add(header);
@@ -55,7 +55,7 @@ public class RemoveColumn extends Standard_Dialog {
         Standard_Button go = new Standard_Button("Go");
         go.addActionListener(e -> {
             this.dispose();
-            LiteSQL.onUpdate("ALTER TABLE " + Global.selected + " DROP COLUMN " + (String) input.getSelectedItem());
+            LiteSQL.onUpdate("DROP TABLE " + (String) input.getSelectedItem());
             owner.dispose();
             new Frame_Dashboard();
         });
