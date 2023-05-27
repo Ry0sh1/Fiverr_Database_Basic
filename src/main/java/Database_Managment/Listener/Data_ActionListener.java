@@ -6,6 +6,7 @@ import Database_Managment.Listener.Dialogs.Options_SwitchTable.SwitchTableWindow
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Data_ActionListener implements ActionListener {
 
@@ -27,7 +28,11 @@ public class Data_ActionListener implements ActionListener {
                 //TODO:CHANGE
             }
             case "switchTable" ->{
-                new SwitchTableWindow(Frame_Dashboard.FRAME);
+                try {
+                    new SwitchTableWindow(Frame_Dashboard.FRAME);
+                }catch (SQLException sqlException){
+                    sqlException.printStackTrace();
+                }
             }
 
         }

@@ -3,9 +3,6 @@ package Database_Managment.Listener.Dialogs.Options_SwitchTable;
 import Database_Managment.Column;
 import Database_Managment.GUI.Dashboard.Frame_Dashboard;
 import Database_Managment.Global;
-import Database_Managment.Listener.Data_ActionListener;
-import Database_Managment.Listener.Dialogs.Options_AddWindow.AddColumn;
-import Database_Managment.Listener.Dialogs.Options_AddWindow.AddTable;
 import Database_Managment.SQL.LiteSQL;
 import Database_Managment.Standard.*;
 
@@ -20,18 +17,29 @@ import java.util.ArrayList;
 public class SwitchTableWindow extends Standard_Dialog {
 
     public static ArrayList<Column> COLUMNS = new ArrayList<>();
-    Standard_TextField input;
-    public SwitchTableWindow(Frame owner) {
+    private final JComboBox<String> input;
+    public SwitchTableWindow(Frame owner) throws SQLException {
         super(owner);
         setTitle("Select");
 
         Standard_Panel contentPanel = new Standard_Panel(new BorderLayout());
 
         Standard_Panel headerPanel = new Standard_Panel(new FlowLayout());
-        Standard_Label header = new Standard_Label("Enter table name!");
+        Standard_Label header = new Standard_Label("Select Table!");
         header.setPreferredSize(new Dimension(160,40));
-        input = new Standard_TextField();
-        input.setPreferredSize(new Dimension(160,40));
+
+        int tableCount = LiteSQL.onQuery("SELECT COUNT(*) FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'").getInt(1);
+        String[] allTables = new String[tableCount];
+        PreparedStatement statement = LiteSQL.prepareStatement("SELECT name FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'");
+        ResultSet rs = statement.executeQuery();
+        int i = 0;
+        while (rs.next()){
+            allTables[i] = rs.getString("name");
+            i++;
+        }
+        input = new JComboBox<>(allTables);
+        input.setSelectedIndex(0);
+        input.setPreferredSize(new Dimension(180,20));
         headerPanel.add(header);
         headerPanel.add(input);
 
@@ -41,32 +49,10 @@ public class SwitchTableWindow extends Standard_Dialog {
         cancel.addActionListener(e -> this.dispose());
         Standard_Button go = new Standard_Button("Go");
         go.addActionListener(e -> {
-            try {
-                PreparedStatement statement = LiteSQL.prepareStatement("SELECT name FROM sqlite_schema WHERE " +
-                        "type ='table' AND " +
-                        "name NOT LIKE 'sqlite_%'");
-                ResultSet rs = statement.executeQuery();
-
-                while (rs.next()){
-                    if (rs.getString("name").equals(input.getText())){
-                        this.dispose();
-                        Global.selected = input.getText();
-                        owner.dispose();
-                        new Frame_Dashboard();
-                    }
-                }
-
-                if (Global.selected.equals(input.getText())){
-                    JOptionPane.showMessageDialog(owner, "Succeed");
-                }else {
-                    JOptionPane.showMessageDialog(owner, "There is no table with this name in this data bank");
-                }
-
-            }catch (SQLException sqlException){
-                System.out.println("Error Line 61 SwitchTableWindow");
-                sqlException.printStackTrace();
-            }
-
+            this.dispose();
+            Global.selected = (String) input.getSelectedItem();
+            owner.dispose();
+            new Frame_Dashboard();
         });
         buttons.add(go);
         buttons.add(cancel);
