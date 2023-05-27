@@ -2,6 +2,7 @@ package Database_Managment.Listener;
 
 import Database_Managment.GUI.Dashboard.Frame_Dashboard;
 import Database_Managment.Listener.Dialogs.Options_AddWindow.AddWindow;
+import Database_Managment.Listener.Dialogs.Options_RemoveWindow.RemoveWindow;
 import Database_Managment.Listener.Dialogs.Options_SwitchTable.SwitchTableWindow;
 
 import java.awt.event.ActionEvent;
@@ -22,7 +23,7 @@ public class Data_ActionListener implements ActionListener {
                 new AddWindow(Frame_Dashboard.FRAME);
             }
             case "remove" ->{
-                //TODO:REMOVE
+                new RemoveWindow(Frame_Dashboard.FRAME);
             }
             case "change" ->{
                 //TODO:CHANGE
