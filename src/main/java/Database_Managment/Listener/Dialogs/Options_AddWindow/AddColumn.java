@@ -47,7 +47,7 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
         center.add(makeForeignKeyPanel(), BorderLayout.CENTER);
 
         add(center, BorderLayout.CENTER);
-        add(makeButtonPanel(), BorderLayout.SOUTH);
+        add(makeButtonPanel(this), BorderLayout.SOUTH);
 
         pack();
         setVisible(true);
@@ -134,11 +134,11 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
         return panel;
     }
 
-    private Standard_Panel makeButtonPanel(){
+    public Standard_Panel makeButtonPanel(Standard_Dialog actualFrame){
         Standard_Panel panel = new Standard_Panel(new FlowLayout());
         Standard_Button cancel = new Standard_Button("Cancel");
         cancel.setPreferredSize(new Dimension(80,40));
-        cancel.addActionListener(e -> this.dispose());
+        cancel.addActionListener(e -> actualFrame.dispose());
         Standard_Button create = new Standard_Button("Create");
         create.addActionListener(this);
         create.setPreferredSize(new Dimension(80,40));
