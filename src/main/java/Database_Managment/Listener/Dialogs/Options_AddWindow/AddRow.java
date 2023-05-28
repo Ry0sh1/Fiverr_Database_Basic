@@ -108,7 +108,7 @@ public class AddRow extends Standard_Dialog implements ActionListener {
 
             for (int i = 0;i<columnCount;i++){
                 switch (columnType[i]){
-                    case "INTEGER", "LONG" -> stmt.append(textFields.get(i).getText());
+                    case "INTEGER", "REAL" -> stmt.append(textFields.get(i).getText());
                     case "TEXT" -> stmt.append("'").append(textFields.get(i).getText()).append("'");
                 }
                 stmt.append(",");

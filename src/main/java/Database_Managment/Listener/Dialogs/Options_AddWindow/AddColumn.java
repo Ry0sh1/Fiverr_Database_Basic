@@ -1,12 +1,17 @@
 package Database_Managment.Listener.Dialogs.Options_AddWindow;
 
 import Database_Managment.Column;
+import Database_Managment.Global;
+import Database_Managment.SQL.LiteSQL;
 import Database_Managment.Standard.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AddColumn extends Standard_Dialog implements ActionListener {
@@ -19,9 +24,11 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
     private Standard_TextField textField_foreignKey_ColumnName;
     private Standard_Checkbox checkBox_notNull;
     private Standard_Checkbox checkBox_autoincrement;
-    public AddColumn(Frame owner) {
+    private int purpose;
+    public AddColumn(Frame owner, int purpose) {
         super(owner);
         setTitle("Add Column");
+        this.purpose = purpose;
 
         Standard_Panel center1 =  new Standard_Panel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -165,13 +172,35 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
                 return false;
             }
         }
+
+        if (purpose==0){
+            try {
+                int columnCount = LiteSQL.onQuery("SELECT COUNT(*) FROM pragma_table_info('" + Global.selected + "')").getInt(1);
+                String[] alreadyExistingColumns = new String[columnCount];
+                PreparedStatement stmt = LiteSQL.prepareStatement("SELECT * FROM pragma_table_info('" + Global.selected + "')");
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()){
+                    if (textField_columnName.getText().equals(rs.getString("name"))){
+                        return false;
+                    }
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if (checkBox_primaryKey.isSelected() || checkBox_autoincrement.isSelected()){
+                return false;
+            }
+        }
+
         return true;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (validInput()){
+        if (validInput()) {
             Column newColumn = new Column(
                     textField_columnName.getText(),
                     comboBox_dataType.getSelectedIndex(),
@@ -182,11 +211,22 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
                     checkBox_notNull.isSelected(),
                     checkBox_autoincrement.isSelected()
             );
-            AddWindow.COLUMNS.add(newColumn);
-            this.dispose();
-            new AddTable((Frame) this.getOwner());
+
+            if (purpose==0){
+                StringBuilder arg = new StringBuilder("ALTER TABLE " + Global.selected + " ADD COLUMN " + textField_columnName.getText() + " " + comboBox_dataType.getSelectedItem());
+                if (checkBox_notNull.isSelected()){
+                    arg.append(" NOT NULL");
+                }
+                System.out.println(arg);
+                LiteSQL.onUpdate(arg.toString());
+            }else if (purpose==1){
+                AddWindow.COLUMNS.add(newColumn);
+                this.dispose();
+                new AddTable((Frame) this.getOwner());
+            }
+
         } else {
-            JOptionPane.showMessageDialog(this,"Invalid Input","Error 201",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid Input", "Error 201", JOptionPane.ERROR_MESSAGE);
         }
 
     }

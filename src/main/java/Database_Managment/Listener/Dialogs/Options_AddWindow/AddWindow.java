@@ -39,7 +39,7 @@ public class AddWindow extends Standard_Dialog {
         Standard_Button column = new Standard_Button("Column");
         column.addActionListener(e -> {
             this.dispose();
-            new AddColumn(owner);
+            new AddColumn(owner, 0);
         });
         Standard_Button row = new Standard_Button("Row");
         row.addActionListener(e -> {

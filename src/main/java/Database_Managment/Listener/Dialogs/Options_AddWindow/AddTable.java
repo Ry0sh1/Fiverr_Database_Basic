@@ -42,7 +42,7 @@ public class AddTable extends Standard_Dialog {
         Standard_Button button_addColumn = new Standard_Button("Create a column");
         button_addColumn.addActionListener(e -> {
             this.dispose();
-            new AddColumn(owner);
+            new AddColumn(owner, 1);
         });
         label_addColumn.setPreferredSize(new Dimension(80,20));
         button_addColumn.setPreferredSize(new Dimension(120,20));
@@ -127,7 +127,6 @@ public class AddTable extends Standard_Dialog {
             JOptionPane.showMessageDialog(owner,"You need at least one primary key!","Error 206",JOptionPane.ERROR_MESSAGE);
             return false;
         }
-
         Set<String> findingDuplicate = new HashSet<>(columnNames);
         if (findingDuplicate.size()!=columnNames.size()){
             JOptionPane.showMessageDialog(owner,"Column names have to be unique!","Error 207",JOptionPane.ERROR_MESSAGE);
@@ -187,6 +186,7 @@ public class AddTable extends Standard_Dialog {
 
         arg.append(")");
 
+        System.out.println(arg);
         LiteSQL.onUpdate(arg.toString());
 
         AddWindow.COLUMNS.clear();
