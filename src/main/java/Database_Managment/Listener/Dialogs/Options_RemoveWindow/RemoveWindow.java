@@ -33,15 +33,18 @@ public class RemoveWindow extends Standard_Dialog {
         cancel.addActionListener(e -> this.dispose());
         Standard_Button table = new Standard_Button("Table");
         table.addActionListener(e -> {
+            dispose();
             new RemoveTable(owner);
         });
         Standard_Button column = new Standard_Button("Column");
         column.addActionListener(e -> {
+            dispose();
             new RemoveColumn(owner);
         });
         Standard_Button row = new Standard_Button("Row");
         row.addActionListener(e -> {
-            //TODO
+            dispose();
+            new RemoveRow(owner);
         });
         cancel.setName("cancel");
         table.setName("table");
