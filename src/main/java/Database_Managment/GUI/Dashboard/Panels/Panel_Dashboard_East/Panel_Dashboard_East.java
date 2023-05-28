@@ -24,7 +24,7 @@ public class Panel_Dashboard_East extends Standard_Panel {
         Standard_Button switchTable = new Standard_Button("Switch Table");
         switchTable.setName("switchTable");
         buttons.add(add);
-        buttons.add(change);
+        //buttons.add(change);
         buttons.add(remove);
         buttons.add(switchTable);
 

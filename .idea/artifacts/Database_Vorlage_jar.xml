@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="Database_Vorlage:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Database_Vorlage_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Database_Vorlage.jar">
+        <element id="module-output" name="Database_Vorlage" />
+      </element>
+      <element id="file-copy" path="$USER_HOME$/Downloads/sqlite-jdbc-3.41.2.1.jar" />
+    </root>
+  </artifact>
+</component>
