@@ -1,5 +1,6 @@
 package Database_Managment.Listener.Dialogs.Options_RemoveWindow;
 
+import Database_Managment.GUI.Dashboard.Frame_Dashboard;
 import Database_Managment.Global;
 import Database_Managment.SQL.LiteSQL;
 import Database_Managment.Standard.*;
@@ -99,6 +100,8 @@ public class RemoveRow extends Standard_Dialog implements ActionListener {
 
         LiteSQL.onUpdate(update);
         this.dispose();
+        Frame_Dashboard.FRAME.dispose();
+        new Frame_Dashboard();
 
     }
 

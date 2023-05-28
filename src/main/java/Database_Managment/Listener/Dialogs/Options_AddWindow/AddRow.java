@@ -1,5 +1,6 @@
 package Database_Managment.Listener.Dialogs.Options_AddWindow;
 
+import Database_Managment.GUI.Dashboard.Frame_Dashboard;
 import Database_Managment.Global;
 import Database_Managment.SQL.LiteSQL;
 import Database_Managment.Standard.*;
@@ -117,6 +118,10 @@ public class AddRow extends Standard_Dialog implements ActionListener {
             stmt.append(")");
 
             LiteSQL.onUpdate(stmt.toString());
+
+            this.dispose();
+            Frame_Dashboard.FRAME.dispose();
+            new Frame_Dashboard();
 
         }else {
             JOptionPane.showMessageDialog(getOwner(),"Invalid Input", "Error 204", JOptionPane.ERROR_MESSAGE);
