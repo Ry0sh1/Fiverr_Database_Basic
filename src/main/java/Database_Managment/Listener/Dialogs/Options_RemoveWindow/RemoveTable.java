@@ -55,7 +55,11 @@ public class RemoveTable extends Standard_Dialog {
         Standard_Button go = new Standard_Button("Go");
         go.addActionListener(e -> {
             this.dispose();
+            String selected = (String) input.getSelectedItem();
             LiteSQL.onUpdate("DROP TABLE " + (String) input.getSelectedItem());
+            if (selected.equals(Global.selected)){
+                Global.selectNextTable();
+            }
             owner.dispose();
             new Frame_Dashboard();
         });

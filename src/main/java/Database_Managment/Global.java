@@ -49,4 +49,12 @@ public class Global {
         }
     };
 
+    public static void selectNextTable(){
+        try {
+            selected = LiteSQL.onQuery("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%'").getString(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

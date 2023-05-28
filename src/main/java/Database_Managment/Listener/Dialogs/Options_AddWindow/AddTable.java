@@ -8,6 +8,8 @@ import Database_Managment.Standard.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AddTable extends Standard_Dialog {
 
@@ -99,11 +101,16 @@ public class AddTable extends Standard_Dialog {
     }
     private boolean checkValidation(){
 
+        ArrayList<String> columnNames = new ArrayList<>();
         if (textField_TableName.getText().equals("") || textField_TableName.getText() == null){
             JOptionPane.showMessageDialog(owner,"Table Name shouldn't be empty!","Error 203",JOptionPane.ERROR_MESSAGE);
             return false;
         }
-
+        if (AddWindow.COLUMNS.isEmpty()){
+            JOptionPane.showMessageDialog(owner,"You need at least one column!","Error 205",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        int primaryKeyCounter=0;
         for (Column c:AddWindow.COLUMNS) {
             if (c.autoIncrement) {
                 if (getAmountPrimaryKeys() > 1) {
@@ -111,7 +118,22 @@ public class AddTable extends Standard_Dialog {
                     return false;
                 }
             }
+            if (c.primaryKey){
+                primaryKeyCounter++;
+            }
+            columnNames.add(c.columnName);
         }
+        if (primaryKeyCounter==0){
+            JOptionPane.showMessageDialog(owner,"You need at least one primary key!","Error 206",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        Set<String> findingDuplicate = new HashSet<>(columnNames);
+        if (findingDuplicate.size()!=columnNames.size()){
+            JOptionPane.showMessageDialog(owner,"Column names have to be unique!","Error 207",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
         createTable();
         return true;
     }
