@@ -219,6 +219,8 @@ public class AddColumn extends Standard_Dialog implements ActionListener {
                 }
                 System.out.println(arg);
                 LiteSQL.onUpdate(arg.toString());
+                this.dispose();
+                new AddTable((Frame) this.getOwner());
             }else if (purpose==1){
                 AddWindow.COLUMNS.add(newColumn);
                 this.dispose();
